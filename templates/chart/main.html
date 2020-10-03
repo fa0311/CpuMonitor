@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>cpu使用率</title>
+    <meta name="description" content="cpu使用率" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <script type="text/javascript" src="./lib-chart"></script>
+</head>
+
+<body>
+
+    <p>cpu使用率</p>
+
+
+    <canvas id="myLineChart"></canvas>
+
+    <script>
+        var ctx = document.getElementById("myLineChart");
+        var config = config_reset("cpu使用率");
+        window.myLineChart = new Chart(ctx, config);
+        setTimeout(loop(), 0);
+
+        function config_reset(label) {
+            return {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: label,
+                        data: [],
+                        borderColor: "#ff0000",
+                        backgroundColor: "rgba(0,0,0,0)"
+                    }],
+                },
+                options: {
+                    responsive: true,
+                    title: {
+                        display: false,
+                        text: 'cpu使用率'
+                    },
+                    tooltips: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    hover: {
+                        mode: 'nearest',
+                        intersect: true
+                    }
+                }
+            }
+        }
+
+
+        function loop() {
+            setTimeout(function () {
+                loop()
+            }, 1000);
+            fetch(`./api`)
+                .then(response => {
+                    response.json().then(userInfo => {
+                        var now = new Date();
+                        var Hour = now.getHours();
+                        var Min = now.getMinutes();
+                        var Sec = now.getSeconds();
+                        if (Hour < 10) Hour = "0" + Hour;
+                        if (Min < 10) Min = "0" + Min;
+                        if (Sec < 10) Sec = "0" + Sec;
+                        config.data.labels.push(String(Hour + ":" + Min + ":" + Sec));
+                        config.data.datasets.forEach(function (dataset) {
+                            dataset.data.push(userInfo);
+                        });
+
+
+                        window.myLineChart.update();
+                    });
+                });
+        }
+    </script>
+</body>
+
+</html>
