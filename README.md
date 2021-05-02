@@ -1,4 +1,4 @@
-# get_twitter_timeline
+# CpuMonitor
 cpu使用率を確認できます
 
-cpu-checker is under MIT License
+CpuMonitor is under MIT License
