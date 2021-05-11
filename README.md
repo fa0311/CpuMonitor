@@ -1,4 +1,6 @@
-# CpuMonitor
+# CpuMonitorpy
 cpu使用率を確認できます
 
-CpuMonitor is under MIT License
+# License
+
+CpuMonitorpy is under MIT License
